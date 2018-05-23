@@ -1,0 +1,3 @@
+[console_scripts]
+flask_vue = flask_vue_scaffold.cli:main
+

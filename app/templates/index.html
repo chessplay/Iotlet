@@ -1,0 +1,233 @@
+{% extends "bootstrap/base.html" %}
+{% block head %}
+{{super()}}
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+
+<!-- body 最后 -->
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+
+
+<!-- 如果使用了某些拓展插件还需要额外的JS -->
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/swiper.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/city-picker.min.js"></script>
+<style >
+    img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+</style>
+
+<script style="javascript" >
+
+
+    $(document).ready(function(){
+
+     $('.record_thumb').click(function(event){
+        alert('hello')
+        alert($(this).attr('data-video'))
+        window.location.href='/details?abc='+$(this).attr('data-video')
+    });
+     $('#record').click(function(event){
+        var recordcmd=''
+        if ($(this).prop("checked")) {
+
+            recordcmd='/addjob'
+         } else {
+
+            recordcmd='/pause'
+         }
+
+        axios.get(recordcmd).then(function(response){
+        console.log(response);
+    }).catch(function (error){
+        console.log(error);
+    });
+    });
+    $('#play').click(function(event){
+         var recordcmd=''
+         if ($(this).prop("checked")) {
+
+            recordcmd='/command?command=start'
+         } else {
+
+            recordcmd='/command?command=pause'
+         }
+        axios.get('/command?command=start').then(function(response){
+        console.log(response);
+    }).catch(function (error){
+        console.log(error);
+    });
+    });
+
+
+
+
+</script>
+
+
+
+
+{% endblock %}
+{% block content %}
+
+<div class="weui-tab">
+    <div class="weui-navbar">
+    <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+      回播
+    </a>
+    <a class="weui-navbar__item" href="#tab2">
+      实时
+    </a>
+  <a class="weui-navbar__item" href="#tab3">
+      设置
+    </a>
+  </div>
+<div class="weui-tab__bd">
+    <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active" style="text-align:center">
+
+      <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">开始录制</div>
+     <div class="weui-cell__ft">
+         <label for="record" class="weui-switch-cp">
+          <input id="record" class="weui-switch-cp__input" type="checkbox" >
+         <div class="weui-switch-cp__box"></div>
+          </label>
+     </div>
+     </div>
+      {% for k in data|batch(2) %}
+      <div class="weui-flex">
+          {% for j in k %}
+      <div class="weui-flex__item" style="width:50%">
+       <img class="record_thumb" src=”{j.img_url}}“ data-video="{{j.video_url}}" onerror="javascript:this.src='./static/img/alt.jpg';"/>
+        <span>{{j.img_url.split('.')[0].split('/')[-1]}}</span>
+       </div>
+       {% endfor %}
+      </div>
+      {% endfor %}
+      <div class="weui-footer">
+  <p class="weui-footer__links">
+    <a href="javascript:void(0);" class="weui-footer__link">加入我们</a>
+    <a href="/logout;" class="weui-footer__link">退出登陆</a>
+  </p>
+  <p class="weui-footer__text">Copyright © 2008-2016 iotlet.io</p>
+</div>
+    </div>
+    <div id="tab2" class="weui-tab__bd-item" style="text-align:center">
+            <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">开始播放</div>
+     <div class="weui-cell__ft">
+         <label for="play" class="weui-switch-cp">
+          <input id="play" class="weui-switch-cp__input" type="checkbox" >
+         <div class="weui-switch-cp__box"></div>
+          </label>
+     </div>
+     </div>
+         <img style="width:100%;height:80%" src="{{url_for('video_feed')}}" onerror="javascript:this.src='/static/img/alt.jpg';">
+        <div class="row" style="margin: 5px">
+
+    </div>
+<div class="weui-footer">
+  <p class="weui-footer__links">
+    <a href="javascript:void(0);" class="weui-footer__link">加入我们</a>
+    <a href="/logout" class="weui-footer__link">退出登陆</a>
+  </p>
+  <p class="weui-footer__text">Copyright © 2008-2016 iotlet.io</p>
+</div>
+    </div>
+    <div id="tab3" class="weui-tab__bd-item" style="text-align:center" >
+
+        <div class="weui-cells weui-cells_form">
+
+    <form action="/setting" method="post">
+        {{ form.hidden_tag() }}
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+           <label class="weui-label"> app名称</label>
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.appname(size=25) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.appname.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+          <label class="weui-label">  设备地址</label>
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.serveraddr(size=25) }}<br>
+            </div>
+
+            {% for error in form.serveraddr.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+          </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+           <label class="weui-label"> 视频流地址</label>
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.rtmpaddr(size=25) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.rtmpaddr.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+       <div class="weui-cells">
+             <div class="weui-cell weui-cell_select">
+              <div class="weui-cell__hd">
+           <label class="weui-label"> 控制器型号</label>
+          </div>
+        <div class="weui-cell__bd">
+         {{form.controller()}}
+        </div>
+      </div>
+
+    </div>
+        <div class="weui-cells">
+
+
+             <div class="weui-cell weui-cell_select">
+             <div class="weui-cell__hd">
+          <label class="weui-label"> 外设型号</label>
+          </div>
+        <div class="weui-cell__bd">
+         {{form.module()}}
+        </div>
+      </div>
+
+    </div>
+
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
+<div class="weui-footer">
+  <p class="weui-footer__links">
+    <a href="javascript:void(0);" class="weui-footer__link">加入我们</a>
+    <a href="/logout" class="weui-footer__link">退出登陆</a>
+  </p>
+  <p class="weui-footer__text">Copyright © 2008-2016 iotlet.io</p>
+</div>
+    </div>
+
+
+  </div>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+{{super()}}
+<meta name="viewport" content="width=device-width, initial-scale=1" xmlns="http://www.w3.org/1999/html">
+<script src="http://cdn.bootcss.com/vue/2.1.10/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+
+<!-- body 最后 -->
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+
+<!-- 如果使用了某些拓展插件还需要额外的JS -->
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/swiper.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/city-picker.min.js"></script>
+
+
+
+{% endblock %}
+
+
+{% block content %}
+    {{super()}}
+
+<div class="weui-cells weui-cells_form">
+ <form action="/index" method="post">
+        {{ form.hidden_tag() }}
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+            {{ form.appname.label }}
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.appname(size=64) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.appname.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+            {{ form.serveraddr.label }}
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.serveraddr(size=64) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.serveraddr.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+            {{ form.rtmpaddr.label }}
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.rtmpaddr(size=64) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.rtmpaddr.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+            {{ form.controller.label }}
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.controller(size=64) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.controller.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+            {{ form.module.label }}
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.module(size=64) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.module.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
+
+{% endblock %}

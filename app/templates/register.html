@@ -1,0 +1,78 @@
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+{{super()}}
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="http://cdn.bootcss.com/vue/2.1.10/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Include the videojs library -->
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- videojs JS Vue -->
+
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css">
+{% endblock %}
+
+{% endblock %}
+
+{% block content %}
+    <h1>用户注册</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+           <label class="weui-label">  用户名</label>
+          </div>
+              <div class="weui-cell__bd">
+            {{ form.username(size=50) }}<br>
+            </div>
+            <div class="weui-cell__bd">
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+          </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+            <label class="weui-label"> 邮箱</label>
+            </div>
+            <div class="weui-cell__bd">
+            {{ form.email(size=50) }}<br>
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+                 </div>
+          </div>
+
+       <div class="weui-cell">
+            <div class="weui-cell__hd">
+            <label class="weui-label">密码</label>
+            </div>
+            <div class="weui-cell__bd">
+            {{ form.password(size=50) }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+          </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+            <label class="weui-label">确认密码</label>
+            </div>
+            <div class="weui-cell__bd">
+
+            {{ form.password2(size=50) }}<br>
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+        </div>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
